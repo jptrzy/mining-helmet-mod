@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "mining_helmet",
+  "version": "${version}",
+
+  "name": "Mining Helmet",
+  "description": "Adds lights source that you could wear.",
+  "authors": [
+    "jptrzy"
+  ],
+  "contact": {
+    "homepage": "https://github.com/jptrzy/mining-helmet-mod",
+    "sources": "https://github.com/jptrzy/mining-helmet-mod"
+  },
+
+  "license": "gpl-3.0",
+  "icon": "assets/mining_helmet/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.jptrzy.mining.helmet.Main"
+    ],
+    "client": [
+      "net.jptrzy.mining.helmet.client.Client"
+    ]
+  },
+  "mixins": [
+    "mining_helmet.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {}
+}
