@@ -4,13 +4,14 @@
   "version": "${version}",
 
   "name": "Mining Helmet",
-  "description": "Adds lights source that you could wear.",
+  "description": "Add lights source that you could wear.",
   "authors": [
     "jptrzy"
   ],
   "contact": {
     "homepage": "https://github.com/jptrzy/mining-helmet-mod",
-    "sources": "https://github.com/jptrzy/mining-helmet-mod"
+    "sources": "https://github.com/jptrzy/mining-helmet-mod",
+    "issues": "https://github.com/jptrzy/mining-helmet-mod/issues"
   },
 
   "license": "gpl-3.0",
