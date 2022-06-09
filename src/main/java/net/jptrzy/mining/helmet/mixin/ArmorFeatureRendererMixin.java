@@ -24,7 +24,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     @Inject(method = "renderArmor", at = @At("HEAD"), cancellable = true)
     void renderArmor(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, EquipmentSlot armorSlot, int light, A model, CallbackInfo ci) {
         if(entity instanceof PlayerEntity player) {
-            if (armorSlot.equals(EquipmentSlot.HEAD) && true) ci.cancel();
+//            if (armorSlot.equals(EquipmentSlot.HEAD) && entity) ci.cancel();
         }
     }
 
