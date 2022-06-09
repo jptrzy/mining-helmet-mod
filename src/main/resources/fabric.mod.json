@@ -14,7 +14,7 @@
     "issues": "https://github.com/jptrzy/mining-helmet-mod/issues"
   },
 
-  "license": "gpl-3.0",
+  "license": "lgpl-3.0",
   "icon": "assets/mining_helmet/icon.png",
 
   "environment": "*",
@@ -31,9 +31,11 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.13.3",
+    "lambdynlights": ">=2.1.0",
+
+    "fabricloader": ">=0.14.7",
     "fabric": "*",
-    "minecraft": "1.18.x",
+    "minecraft": "~1.19",
     "java": ">=17"
   },
   "suggests": {}
