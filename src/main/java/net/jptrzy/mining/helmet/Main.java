@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 public class Main implements ModInitializer {
 
+	public static final boolean DEBUG = true;
+
 	public static final String MOD_ID = "mining_helmet";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	public static boolean TRINKETS_LOADED;

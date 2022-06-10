@@ -37,7 +37,7 @@ public class MinerCharmTrinket implements Trinket, TrinketRenderer {
 
         model.setAngles(entity, limbAngle, limbDistance, animationProgress, animationProgress, headPitch);
         model.animateModel(entity, limbAngle, limbDistance, tickDelta);
-        matrices.translate(-.5F, -.4F,-.1F);
+        matrices.translate(-.55F, -.4F,-.1F);
 
 //        TrinketRenderer.followBodyRotations(entity, getModel());
 
@@ -46,7 +46,9 @@ public class MinerCharmTrinket implements Trinket, TrinketRenderer {
     }
 
     public MinerCharmModel getModel() {
-        model = new MinerCharmModel();
+        if(model == null || Main.DEBUG) {
+            model = new MinerCharmModel();
+        }
         return model;
     }
 }

@@ -1,11 +1,13 @@
 package net.jptrzy.mining.helmet.client.model;
 
+import net.jptrzy.mining.helmet.Main;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.MathHelper;
 
 import static net.minecraft.client.render.entity.model.BipedEntityModel.getModelData;
 
@@ -27,10 +29,7 @@ public class MinerCharmModel extends EntityModel<LivingEntity> {
         root = modelPartData.createPart(16, 16);
     }
 
-    @Override
-    public void setAngles(LivingEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
 
-    }
 
 //    public void test(BipedEntityModel<LivingEntity> contextModel){
 //
@@ -58,6 +57,13 @@ public class MinerCharmModel extends EntityModel<LivingEntity> {
 
     @Override
     public void animateModel(LivingEntity entity, float limbAngle, float limbDistance, float tickDelta) {
-        this.root.setPivot(0, 2, 0);
+    }
+
+    @Override
+    public void setAngles(LivingEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+        float x = MathHelper.cos(animationProgress * .02F )*.5F;
+        float y = MathHelper.cos(animationProgress * .1F );
+        float z = MathHelper.cos(animationProgress * .05F )*.5F;
+        this.root.setPivot(x, y, z);
     }
 }
