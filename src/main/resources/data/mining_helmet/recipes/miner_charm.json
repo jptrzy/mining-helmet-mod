@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "bcb",
+    " b "
+  ],
+  "key": {
+    "a": {"item": "minecraft:gold_ingot"},
+    "b": {"item": "minecraft:glass"},
+    "c": {"item": "minecraft:soul_lantern"}
+  },
+  "result": {
+    "item": "mining_helmet:miner_charm"
+  }
+}
