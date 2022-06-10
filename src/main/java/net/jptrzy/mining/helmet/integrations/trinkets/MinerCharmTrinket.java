@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 
 public class MinerCharmTrinket implements Trinket, TrinketRenderer {
     private MinerCharmModel model;
-    private static final Identifier MODEL_TEXTURE = Main.id("textures/armor/mining_charm.png");
+    private static final Identifier MODEL_TEXTURE = Main.id("textures/models/ghost.png");
 
     public static void register() {
         MinerCharmTrinket trinket = new MinerCharmTrinket();
@@ -33,21 +33,20 @@ public class MinerCharmTrinket implements Trinket, TrinketRenderer {
 
     @Override
     public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        BipedEntityModel<LivingEntity> model = getModel();
+        EntityModel<LivingEntity> model = getModel();
 
         model.setAngles(entity, limbAngle, limbDistance, animationProgress, animationProgress, headPitch);
         model.animateModel(entity, limbAngle, limbDistance, tickDelta);
+        matrices.translate(-.5F, -.4F,-.1F);
 
-        TrinketRenderer.followBodyRotations(entity, getModel());
+//        TrinketRenderer.followBodyRotations(entity, getModel());
 
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.getLayer(MODEL_TEXTURE));
-        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 255, 255, 255, 1);
+        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
     }
 
     public MinerCharmModel getModel() {
-        if (model == null) {
-            model = new MinerCharmModel();
-        }
+        model = new MinerCharmModel();
         return model;
     }
 }

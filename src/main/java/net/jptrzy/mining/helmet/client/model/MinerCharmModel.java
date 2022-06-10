@@ -1,39 +1,63 @@
 package net.jptrzy.mining.helmet.client.model;
 
 import net.minecraft.client.model.*;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 
-public class MinerCharmModel extends BipedEntityModel<LivingEntity> {
+import static net.minecraft.client.render.entity.model.BipedEntityModel.getModelData;
+
+public class MinerCharmModel extends EntityModel<LivingEntity> {
+
+    private final ModelData modelData;
+    private final ModelPartData modelPartData;
+    private final ModelPart root;
+
     public MinerCharmModel() {
-        super(newParts());
-
-
-        this.body.visible = true;
-        this.rightArm.visible = false;
-        this.leftArm.visible = false;
-        this.head.visible = false;
-        this.hat.visible = false;
-        this.rightLeg.visible = false;
-        this.leftLeg.visible = false;
-    }
-
-    public void test(BipedEntityModel<LivingEntity> contextModel){
-
-    }
-
-    private static ModelPart newParts() {
-
-        ModelData data = getModelData(Dilation.NONE, 0.0F);
-        ModelPartData child = data.getRoot().getChild("body");
-
-        child.addChild("base", ModelPartBuilder.create()
+        super();
+        modelData = new ModelData();
+        modelPartData = modelData.getRoot();
+        modelPartData.addChild("base", ModelPartBuilder.create()
 //                        .mirrored()
                         .uv(0, 0)
-                        .cuboid(-3.5F, .5f, 2.2F, 7.0F, 10.0F, 4.0F),
+                        .cuboid(0, 0, 0, 3.0F, 4.0F, 3.0F),
                 ModelTransform.NONE);
+        root = modelPartData.createPart(16, 16);
+    }
 
-//        bb_main.setTextureOffset(0, 0).addBox(-3.5F, -23.0F, 2.2F, 7.0F, 10.0F, 4.0F, 0.0F, false);
-        return data.getRoot().createPart(64, 64);
+    @Override
+    public void setAngles(LivingEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+
+    }
+
+//    public void test(BipedEntityModel<LivingEntity> contextModel){
+//
+//    }
+//
+//    private static ModelPart newParts() {
+//
+//        ModelData data = getModelData(Dilation.NONE, 0.0F);
+//        ModelPartData child = data.getRoot().getChild("body");
+//
+//        child.addChild("base", ModelPartBuilder.create()
+////                        .mirrored()
+//                        .uv(0, 0)
+//                        .cuboid(0, 0, 0, 3.0F, 4.0F, 3.0F),
+//                ModelTransform.NONE);
+//
+//        //partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -4.0F, 0.0F, 3.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+//        return child.createPart(16, 16);
+//    }
+
+    @Override
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+        this.root.render(matrices, vertices, light, overlay);
+    }
+
+    @Override
+    public void animateModel(LivingEntity entity, float limbAngle, float limbDistance, float tickDelta) {
+        this.root.setPivot(0, 2, 0);
     }
 }
