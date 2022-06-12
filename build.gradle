@@ -3,6 +3,10 @@ plugins {
 	id 'maven-publish'
 }
 
+
+// sourceCompatibility = 1.17
+// targetCompatibility = 1.17
+
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 

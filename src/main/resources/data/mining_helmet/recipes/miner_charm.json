@@ -1,14 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "aaa",
+    "ada",
     "bcb",
     " b "
   ],
   "key": {
     "a": {"item": "minecraft:gold_ingot"},
     "b": {"item": "minecraft:glass"},
-    "c": {"item": "minecraft:soul_lantern"}
+    "c": {"item": "minecraft:soul_lantern"},
+    "d": {"item": "minecraft:crying_obsidian"}
   },
   "result": {
     "item": "mining_helmet:miner_charm"

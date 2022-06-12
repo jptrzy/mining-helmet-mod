@@ -1,5 +1,7 @@
 package net.jptrzy.mining.helmet.integrations.trinkets;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.Trinket;
 import dev.emi.trinkets.api.TrinketsApi;
@@ -8,6 +10,7 @@ import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.jptrzy.mining.helmet.Main;
 import net.jptrzy.mining.helmet.client.model.MinerCharmModel;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -39,10 +42,13 @@ public class MinerCharmTrinket implements Trinket, TrinketRenderer {
         model.animateModel(entity, limbAngle, limbDistance, tickDelta);
         matrices.translate(-.55F, -.4F,-.1F);
 
-//        TrinketRenderer.followBodyRotations(entity, getModel());
-
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.getLayer(MODEL_TEXTURE));
-        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        
+        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(MODEL_TEXTURE));
+        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, .7F);
+        
+        RenderSystem.disableBlend();
     }
 
     public MinerCharmModel getModel() {
