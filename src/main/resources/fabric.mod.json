@@ -36,6 +36,7 @@
     "java": ">=17"
   },
   "suggests": {
-    "trinkets": ">=3.4.0"
+    "trinkets": ">=3.4.0",
+    "trinkets-curios-theme" : "*"
   }
 }

@@ -27,6 +27,8 @@ public class MiningHelmetArmorRenderer implements ArmorRenderer {
         matrices.translate(0D, -.5D, 0D);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0F));
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0F));
+        // Minimal scale for helmet not clipping with outer layer of the skin (with 3d skin layer mod).
+        matrices.scale(1.05F, 1.05F, 1.05F);
 
         itemRenderer.renderItem(stack, ModelTransformation.Mode.NONE, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, itemRenderer.getModels().getModelManager().getModel(new ModelIdentifier(modelId)));
         matrices.pop();
