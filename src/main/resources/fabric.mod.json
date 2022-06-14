@@ -23,9 +23,9 @@
     "client": ["net.jptrzy.mining.helmet.client.Client"],
     "dynamiclights": ["net.jptrzy.mining.helmet.Light"]
   },
-  "mixins": [
-    "mining_helmet.mixins.json"
-  ],
+
+  "mixins": [ "mining-helmet.mixins.json" ],
+  "accessWidener": "mining-helmet.accesswidener",
 
   "depends": {
     "lambdynlights": ">=2.1.1",

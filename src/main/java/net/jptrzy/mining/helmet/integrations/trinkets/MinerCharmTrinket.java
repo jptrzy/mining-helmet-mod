@@ -17,7 +17,9 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 public class MinerCharmTrinket implements Trinket, TrinketRenderer {
@@ -32,6 +34,10 @@ public class MinerCharmTrinket implements Trinket, TrinketRenderer {
 
     public static int getLightLevel(LivingEntity entity){
         return TrinketsApi.getTrinketComponent(entity).get().isEquipped(Main.MINER_CHARM) ? 15 : 0;
+    }
+
+    public static boolean isEquipped(LivingEntity entity){
+        return TrinketsApi.getTrinketComponent(entity).get().isEquipped(Main.MINER_CHARM);
     }
 
     @Override
@@ -49,6 +55,14 @@ public class MinerCharmTrinket implements Trinket, TrinketRenderer {
         model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, .7F);
         
         RenderSystem.disableBlend();
+    }
+
+    @Override
+    public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if(entity instanceof PlayerEntity playerEntity) {
+            playerEntity.dropShoulderEntity(playerEntity.getShoulderEntityRight());
+            playerEntity.setShoulderEntityRight(new NbtCompound());
+        }
     }
 
     public MinerCharmModel getModel() {

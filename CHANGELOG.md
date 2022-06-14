@@ -8,4 +8,5 @@
 
 ## 1.1.1+1.19
 * Fix mining helmet clipping with the outer layer of the skin.
+* Equipping Ghost in a Bottle, kick out a parrot.
 
