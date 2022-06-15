@@ -1,4 +1,6 @@
 {
+  "subtitles.mining_helmet.find_hidden_ore" : "Find Hidden Ore",
+
   "tooltip.mining_helmet.miner_charm.trinket_not_loaded" : "Without Trinkets Mod this item is useless.",
 
   "item.mining_helmet.mining_helmet": "Mining Helmet",

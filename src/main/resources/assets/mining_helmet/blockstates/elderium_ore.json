@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "hidden=true": { "model": "minecraft:block/stone" },
+    "hidden=false": { "model": "mining_helmet:block/elderium_ore" }
+  }
+}
