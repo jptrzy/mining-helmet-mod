@@ -1,0 +1,6 @@
+{
+  "parent": "mining_helmet:block/hidden_ore_animation",
+  "textures": {
+    "layer0": "minecraft:block/stone"
+  }
+}

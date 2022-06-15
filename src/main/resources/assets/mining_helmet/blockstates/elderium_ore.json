@@ -1,6 +1,7 @@
 {
   "variants": {
-    "hidden=true": { "model": "minecraft:block/stone" },
-    "hidden=false": { "model": "mining_helmet:block/elderium_ore" }
+    "state=unhidden": { "model": "mining_helmet:block/elderium_ore" },
+    "state=hidden": { "model": "minecraft:block/gold_block" },
+    "state=hidden_animated": { "model": "mining_helmet:block/elderium_ore_animation" }
   }
 }

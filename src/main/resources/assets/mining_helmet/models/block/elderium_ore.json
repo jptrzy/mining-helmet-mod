@@ -1,8 +1,7 @@
 {
   "parent": "mining_helmet:block/cube_layered",
   "textures": {
-    "layer0": "block/stone",
-    "layer1": "mining_helmet:block/elderium_ore",
-    "layer1_1" : "mining_helmet:block/elderium_ore_1"
+    "layer0": "minecraft:block/stone",
+    "layer1": "mining_helmet:block/elderium_ore"
   }
 }

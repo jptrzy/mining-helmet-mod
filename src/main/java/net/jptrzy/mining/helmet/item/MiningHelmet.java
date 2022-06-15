@@ -1,5 +1,6 @@
 package net.jptrzy.mining.helmet.item;
 
+import net.jptrzy.mining.helmet.Main;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -12,7 +13,7 @@ public class MiningHelmet extends ArmorItem {
         super(
             ArmorMaterials.GOLD,
             EquipmentSlot.HEAD,
-            new Item.Settings().group(ItemGroup.COMBAT)
+            new Item.Settings().group(Main.ITEM_GROUP)
         );
     }
 }

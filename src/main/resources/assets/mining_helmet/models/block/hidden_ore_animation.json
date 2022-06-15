@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "#block",
+    "gloss" : "mining_helmet:block/gloss",
+    "gloss_odd" : "mining_helmet:block/gloss_odd"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#layer0", "cullface": "down" },
+        "up":    { "texture": "#layer0", "cullface": "up" },
+        "north": { "texture": "#layer0", "cullface": "north" },
+        "south": { "texture": "#layer0", "cullface": "south" },
+        "west":  { "texture": "#layer0", "cullface": "west" },
+        "east":  { "texture": "#layer0", "cullface": "east" }
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "uv": [16, 0, 0, 16], "texture": "#gloss_odd", "cullface": "down", "rotation": 90},
+        "up":    { "uv": [16, 0, 0, 16], "texture": "#gloss", "cullface": "up" },
+        "north": { "uv": [0, 16, 16, 0], "texture": "#gloss", "cullface": "north", "rotation": 90 },
+        "south": { "uv": [16, 0, 0, 16], "texture": "#gloss_odd", "cullface": "south" },
+        "west":  { "uv": [0, 16, 16, 0], "texture": "#gloss_odd", "cullface": "west", "rotation": 90 },
+        "east":  { "uv": [16, 0, 0, 16], "texture": "#gloss", "cullface": "east" }
+      }
+    }
+  ]
+}

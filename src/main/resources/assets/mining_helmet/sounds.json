@@ -1,5 +1,5 @@
 {
-  "entity.player.find.hidden.ore": {
+  "entity.player.discover.hidden.ore": {
     "subtitle": "subtitles.mining_helmet.find_hidden_ore",
     "sounds": [
       "mining_helmet:find_hidden_ore"

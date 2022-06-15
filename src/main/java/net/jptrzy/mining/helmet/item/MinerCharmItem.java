@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MinerCharmItem extends Item {
     public MinerCharmItem() {
-        super(new Item.Settings().group(ItemGroup.COMBAT).maxCount(1));
+        super(new Item.Settings().group(Main.ITEM_GROUP).maxCount(1));
     }
 
     @Override

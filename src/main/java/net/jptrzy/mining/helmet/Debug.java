@@ -19,8 +19,8 @@ public class Debug {
 
     /*
     EVENTS
-
-    42000 - change block
+    ID      DESC
+    42000   discover hidden ore
      */
 
     public static void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks){
@@ -28,8 +28,8 @@ public class Debug {
         BlockPos pos = ((BlockHitResult) hit).getBlockPos();
 
         if (hit.getType() == HitResult.Type.BLOCK && user instanceof PlayerEntity player) {
-            if (world.getBlockState(pos).isOf(Main.ELDERIUM_ORE_BLOCK) && world.getBlockState(pos).get(AbstractHiddenOreBlock.HIDDEN)){
-                world.setBlockState(pos, world.getBlockState(pos).with(AbstractHiddenOreBlock.HIDDEN, false));
+            if (world.getBlockState(pos).isOf(Main.ELDERIUM_ORE_BLOCK) && world.getBlockState(pos).get(AbstractHiddenOreBlock.STATE).equals(AbstractHiddenOreBlock.State.HIDDEN_ANIMATED) ){
+                world.setBlockState(pos, world.getBlockState(pos).with(AbstractHiddenOreBlock.STATE, AbstractHiddenOreBlock.State.UNHIDDEN));
 
                 world.syncWorldEvent(player, 42000, pos, 0);
                 world.playSound(player, user.getBlockPos(), Main.FIND_HIDDEN_ORE_SOUND_EVENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
