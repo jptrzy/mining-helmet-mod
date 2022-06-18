@@ -3,20 +3,28 @@ package net.jptrzy.mining.helmet;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.jptrzy.mining.helmet.block.ElderiumOreBlock;
+import net.jptrzy.mining.helmet.integrations.trinkets.GrapplePackTrinket;
 import net.jptrzy.mining.helmet.integrations.trinkets.MinerCharmTrinket;
 import net.jptrzy.mining.helmet.item.MinerCharmItem;
 import net.jptrzy.mining.helmet.item.MiningHelmet;
+import net.jptrzy.mining.helmet.registry.ItemRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
@@ -32,14 +40,8 @@ public class Main implements ModInitializer {
 
 	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(
 			id("general"),
-			() -> new ItemStack(Main.MINING_HELMET)
+			() -> new ItemStack(ItemRegister.MINING_HELMET)
 	);
-
-	// Items
-	public static final Item MINING_HELMET = new MiningHelmet();
-	public static final Item MINER_CHARM = new MinerCharmItem();
-	public static final Item RAW_ELDERIUM_ = new Item(new Item.Settings().group(ITEM_GROUP));
-
 
 	// Blocks
 	public static final Block ELDERIUM_ORE_BLOCK = new ElderiumOreBlock(
@@ -50,18 +52,15 @@ public class Main implements ModInitializer {
 	public static Identifier FIND_HIDDEN_ORE_SOUND_ID= id("entity.player.discover.hidden.ore");
 	public static SoundEvent FIND_HIDDEN_ORE_SOUND_EVENT = new SoundEvent(FIND_HIDDEN_ORE_SOUND_ID);
 
+	public static final Identifier NETWORK_TRY_HOOKING_ID = id("try_hooking");
 
 	@Override public void onInitialize() {
 		TRINKETS_LOADED = FabricLoader.getInstance().isModLoaded("trinkets");
 
-		if(TRINKETS_LOADED){
-			MinerCharmTrinket.register();
-		}
+		ItemRegister.init();
 
-		Registry.register(Registry.ITEM, id("mining_helmet"), MINING_HELMET);
-		Registry.register(Registry.ITEM, id("miner_charm"), MINER_CHARM);
-
-		Registry.register(Registry.ITEM, id("raw_elderium"), RAW_ELDERIUM_);
+		DataTrackers.HOOKED_TRACKER.getId();
+		DataTrackers.BLOCK_TRACKER.getId();
 
 		Registry.register(Registry.BLOCK, id("elderium_ore"), ELDERIUM_ORE_BLOCK);
 		Registry.register(Registry.ITEM, id("elderium_ore"),
@@ -69,6 +68,22 @@ public class Main implements ModInitializer {
 		);
 
 		Registry.register(Registry.SOUND_EVENT, FIND_HIDDEN_ORE_SOUND_ID, FIND_HIDDEN_ORE_SOUND_EVENT);
+
+		registerPacketHandlers();
+	}
+
+	private void registerPacketHandlers() {
+		ServerPlayNetworking.registerGlobalReceiver(NETWORK_TRY_HOOKING_ID,
+				(server, player, networkHandler, buf, sender) -> {
+					server.execute(() -> {
+						Debug.tryHooking(server, player, networkHandler, buf, sender);
+					});
+				});
+	}
+
+	public static class DataTrackers {
+		public static final TrackedData<Boolean> HOOKED_TRACKER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+		public static final TrackedData<BlockPos> BLOCK_TRACKER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 	}
 
 	public static Identifier id(String key){
