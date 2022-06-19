@@ -8,12 +8,26 @@ grapple pack with enchantment or spomthing else
 ## Could you swing on it?
 Yes, you could, but with big restrains.
 
-
+## ToCheck:
+* on death 
+* on tp
+* on destroy block
+* on placing block in the way
+* on gamemode change
+* on un-equipping
+* on logging out
+* on logging in
+* is flying
+* is fall flying
+* is in submerged in fluid
 
 # Interesting Mods
 * https://github.com/CammiePone/Hookshot
 * https://github.com/ModsByLeo/SimpleAngelRing
 * https://github.com/TurtleArmyMc/DoubleJump
 * https://github.com/shedaniel/IronJetpacks
+
+
+# TODO
 
 

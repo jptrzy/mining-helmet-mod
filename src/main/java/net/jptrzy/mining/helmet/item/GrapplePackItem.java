@@ -37,23 +37,34 @@ public class GrapplePackItem extends ArmorItem {
 //            player.setVelocity(0, 0, 0);
 //            player.setMovementSpeed(0);
 
-            if(!player.world.isClient()) {
-                int i = 0;
-                if ( ((ServerPlayerEntity) player).jumping) {
-                    i++;
-                }
-                if (player.getFlag(1)) {
-                    i--;
-                }
-
-                Main.LOGGER.warn(i);
+            int i = 0;
+            if (player.jumping) {
+                i++;
             }
-//            player.setVelocity(0, 0, 0);
+            if (player.getFlag(1)) {
+                i--;
+            }
+
+//            Main.LOGGER.warn(i);
+            if(i != 0){
+                double y = player.getVelocity().getY();
+                    if((i > 0) != (y > 0)){
+                        y = 0;
+                    }
+                y = Math.max(-0.4, Math.min(0.4, y + i * .05));
+                player.setVelocity(0, y, 0);
+            }else{
+                player.setVelocity(0, 0, 0);
+            }
+
+
 //
 //            player.getFlag(1);
 //
 //            player.jum
-
+            if(player.isOnGround()){
+                ((PlayerProperties) player).setHooked(false);
+            }
         }
     }
 

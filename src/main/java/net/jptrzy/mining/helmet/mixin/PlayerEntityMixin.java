@@ -3,8 +3,7 @@ package net.jptrzy.mining.helmet.mixin;
 import net.jptrzy.mining.helmet.Main;
 import net.jptrzy.mining.helmet.integrations.trinkets.MinerCharmTrinket;
 import net.jptrzy.mining.helmet.util.PlayerProperties;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -13,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -64,4 +64,51 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
         return !(Main.TRINKETS_LOADED && MinerCharmTrinket.isEquipped((PlayerEntity) (Object) this)) && instance.isEmpty();
     }
 
+    @Inject(method="tickMovement", at=@At("HEAD"), cancellable = true) public void tickMovement(CallbackInfo ci) {
+//        if (((PlayerProperties) this).isHooked()){
+//            ci.cancel();
+//        }
+    }
+
+    @Override public float getMovementSpeed(){
+         return ((PlayerProperties) this).isHooked() ? 0 : super.getMovementSpeed();
+    }
+
+//    @Override public void move(MovementType movementType, Vec3d movement) {
+//        if(!((PlayerProperties) this).isHooked()){
+//            super.move(movementType, movement);
+//        }
+//    }
+
+    @Shadow public void increaseTravelMotionStats(double dx, double dy, double dz){};
+
+    @Inject(method="travel", at=@At("HEAD"), cancellable = true) public void travel(CallbackInfo ci) {
+        if(((PlayerProperties) this).isHooked()){
+            this.move(MovementType.SELF, this.getVelocity());
+            this.increaseTravelMotionStats(0, 0, 0);
+            this.updateLimbs(this, this instanceof Flutterer);
+            this.fallDistance = 0;
+            ci.cancel();
+        }
+    }
+
+//    @Inject(method="increaseTravelMotionStats", at=@At("HEAD"), cancellable = true) public void increaseTravelMotionStats(CallbackInfo ci) {
+//        if(((PlayerProperties) this).isHooked()){
+//            ci.cancel();
+//        }
+//    }
+
+//    @Redirect(method="updatePose", at=@At(
+//            value="INVOKE", target = "net/minecraft/entity/player/PlayerEntity.isSneaking ()Z"
+//    ))
+//    public boolean _isSneaking(PlayerEntity player) {
+//        Main.LOGGER.warn(!((PlayerProperties) player).isHooked() && player.isSneaking());
+//        return !((PlayerProperties) player).isHooked() && player.isSneaking();
+//    }
+
+//    @Inject(method="updatePose", at=@At("TAIL"), cancellable = true) public void updatePose(CallbackInfo ci) {
+//        if (((PlayerProperties) this).isHooked()) {
+//            this.setPose(EntityPose.STANDING);
+//        }
+//    }
 }

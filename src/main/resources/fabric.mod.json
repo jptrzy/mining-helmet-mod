@@ -21,6 +21,7 @@
   "entrypoints": {
     "main": ["net.jptrzy.mining.helmet.Main"],
     "client": ["net.jptrzy.mining.helmet.client.Client"],
+    "server": ["net.jptrzy.mining.helmet.Server"],
     "dynamiclights": ["net.jptrzy.mining.helmet.Light"]
   },
 

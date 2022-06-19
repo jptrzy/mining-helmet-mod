@@ -4,6 +4,9 @@ import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.jptrzy.mining.helmet.Debug;
 import net.jptrzy.mining.helmet.Main;
+import net.jptrzy.mining.helmet.network.NetworkHandler;
+import net.jptrzy.mining.helmet.network.message.TryHookingMessage;
+import net.jptrzy.mining.helmet.network.message.UpdateInputMessage;
 import net.jptrzy.mining.helmet.util.PlayerProperties;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -42,7 +45,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         target="net/minecraft/client/network/ClientPlayerEntity.getAbilities ()Lnet/minecraft/entity/player/PlayerAbilities;"
     ))
     public void tickMovement(CallbackInfo ci, boolean bl) {
-        if(!this.isOnGround() && !bl && this.input.jumping && !this.getAbilities().flying){
+        if(!bl && this.input.jumping && !this.getAbilities().flying){
             if(this.abilityResyncCountdown == 0){
                 this.abilityResyncCountdown = 7;
             }else{
@@ -54,7 +57,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
     @Inject(method="sendMovementPackets", at=@At("HEAD"))
     private void sendMovementPackets(CallbackInfo ci) {
         if(((PlayerProperties) this).isHooked()){
-            this.networkHandler.sendPacket(new PlayerInputC2SPacket(this.sidewaysSpeed, this.forwardSpeed, this.input.jumping, this.input.sneaking));
+            NetworkHandler.sendToServer(new UpdateInputMessage(this.jumping));
         }
     }
 

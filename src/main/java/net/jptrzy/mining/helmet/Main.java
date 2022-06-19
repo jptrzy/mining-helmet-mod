@@ -11,6 +11,7 @@ import net.jptrzy.mining.helmet.integrations.trinkets.GrapplePackTrinket;
 import net.jptrzy.mining.helmet.integrations.trinkets.MinerCharmTrinket;
 import net.jptrzy.mining.helmet.item.MinerCharmItem;
 import net.jptrzy.mining.helmet.item.MiningHelmet;
+import net.jptrzy.mining.helmet.network.NetworkHandler;
 import net.jptrzy.mining.helmet.registry.ItemRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -52,12 +53,13 @@ public class Main implements ModInitializer {
 	public static Identifier FIND_HIDDEN_ORE_SOUND_ID= id("entity.player.discover.hidden.ore");
 	public static SoundEvent FIND_HIDDEN_ORE_SOUND_EVENT = new SoundEvent(FIND_HIDDEN_ORE_SOUND_ID);
 
-	public static final Identifier NETWORK_TRY_HOOKING_ID = id("try_hooking");
+//	public static final Identifier NETWORK_TRY_HOOKING_ID = id("try_hooking");
 
 	@Override public void onInitialize() {
 		TRINKETS_LOADED = FabricLoader.getInstance().isModLoaded("trinkets");
 
 		ItemRegister.init();
+		NetworkHandler.init();
 
 		DataTrackers.HOOKED_TRACKER.getId();
 		DataTrackers.BLOCK_TRACKER.getId();
@@ -69,17 +71,18 @@ public class Main implements ModInitializer {
 
 		Registry.register(Registry.SOUND_EVENT, FIND_HIDDEN_ORE_SOUND_ID, FIND_HIDDEN_ORE_SOUND_EVENT);
 
-		registerPacketHandlers();
+
+//		registerPacketHandlers();
 	}
 
-	private void registerPacketHandlers() {
-		ServerPlayNetworking.registerGlobalReceiver(NETWORK_TRY_HOOKING_ID,
-				(server, player, networkHandler, buf, sender) -> {
-					server.execute(() -> {
-						Debug.tryHooking(server, player, networkHandler, buf, sender);
-					});
-				});
-	}
+//	private void registerPacketHandlers() {
+//		ServerPlayNetworking.registerGlobalReceiver(NETWORK_TRY_HOOKING_ID,
+//				(server, player, networkHandler, buf, sender) -> {
+//					server.execute(() -> {
+//						Debug.tryHooking(server, player, networkHandler, buf, sender);
+//					});
+//				});
+//	}
 
 	public static class DataTrackers {
 		public static final TrackedData<Boolean> HOOKED_TRACKER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);

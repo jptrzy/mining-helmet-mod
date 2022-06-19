@@ -1,14 +1,22 @@
 package net.jptrzy.mining.helmet;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.jptrzy.mining.helmet.block.AbstractHiddenOreBlock;
+import net.jptrzy.mining.helmet.network.NetworkHandler;
+import net.jptrzy.mining.helmet.network.message.TryHookingMessage;
 import net.jptrzy.mining.helmet.registry.ItemRegister;
 import net.jptrzy.mining.helmet.util.PlayerProperties;
+import net.minecraft.block.Block;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.util.ParticleUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantment;
@@ -23,9 +31,11 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
@@ -63,9 +73,7 @@ public class Debug {
     }
 
     public static void tickMovement(CallbackInfo ci, ClientPlayerEntity player, boolean bl){
-        Main.LOGGER.warn("DOUBLE JUMP {} {} {}", bl, player.input.jumping, player.getAbilities().flying);
-
-        ClientPlayNetworking.send(Main.NETWORK_TRY_HOOKING_ID, new PacketByteBuf(Unpooled.buffer()));
+        NetworkHandler.sendToServer(new TryHookingMessage());
     }
 
     public static void getEquipmentLevel(Enchantment enchantment, LivingEntity entity, CallbackInfoReturnable<Integer> cir){
@@ -75,12 +83,20 @@ public class Debug {
         }
     }
 
-    public static void tryHooking(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler networkHandler, PacketByteBuf buf, PacketSender sender){
+    public static void tryHooking(MinecraftServer server, ServerPlayerEntity player){ //ServerPlayNetworkHandler networkHandler, PacketByteBuf buf, PacketSender sender
 
         BlockHitResult hit = player.world.raycast(new RaycastContext(player.getPos(), player.getPos().add(0, 16, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 
         Main.LOGGER.warn(hit.getType());
-        if(hit.getType() == HitResult.Type.BLOCK){
+
+        if(player.isCreative()){
+            ((PlayerProperties) player).setHooked(false);
+            return;
+        }
+
+        if (((PlayerProperties) player).isHooked()) {
+            ((PlayerProperties) player).setHooked(false);
+        } else if (hit.getType() == HitResult.Type.BLOCK) {
             ((PlayerProperties) player).setHooked(true);
             ((PlayerProperties) player).setHookedBlock(hit.getBlockPos());
         }
@@ -88,5 +104,25 @@ public class Debug {
 
     public static void updateInput(float sidewaysSpeed, float forwardSpeed, boolean jumping, boolean sneaking, CallbackInfo ci){
         Main.LOGGER.warn("UPDATE {}", jumping);
+    }
+
+    public static void renderChunkDebugInfo(Camera camera, CallbackInfo ci) {
+        if (Main.DEBUG && ((PlayerProperties) MinecraftClient.getInstance().player).isHooked()) {
+
+            BlockPos pos = ((PlayerProperties) MinecraftClient.getInstance().player).getHookedBlock();
+            String info = "Dis " + String.format("%.5g%n", pos.getY() - MinecraftClient.getInstance().player.getY()) + "|";
+
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(
+                    GlStateManager.SrcFactor.SRC_ALPHA,
+                    GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA,
+                    GlStateManager.SrcFactor.ONE,
+                    GlStateManager.DstFactor.ZERO
+            );
+
+            DebugRenderer.drawBox(pos, .01F, .1F, 1, .1F, .5F);
+
+            DebugRenderer.drawString(info, pos.getX(), pos.getY() - 1, pos.getZ(), 255);
+        }
     }
 }

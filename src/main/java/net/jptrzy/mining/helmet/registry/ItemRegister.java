@@ -28,12 +28,12 @@ public class ItemRegister {
     public static void init() {
         for ( Map.Entry<String, Item> entry : items.entrySet() ) {
             Registry.register(Registry.ITEM, Main.id(entry.getKey()), entry.getValue());
-            if(Main.TRINKETS_LOADED){
+            if(Main.TRINKETS_LOADED && trinkets.containsKey(entry.getKey())){
                 // Run Static Method (register) from class that extends Optional Trinkets
                 try {
                     Method meth = trinkets.get(entry.getKey()).getMethod("register");
                     meth.invoke(null);
-                }catch(Exception e) {
+                } catch (Exception e) {
                     Main.LOGGER.error("Who could guest that it wouldn't work. {}", e.toString());
                 }
             }
