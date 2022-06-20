@@ -3,6 +3,7 @@ package net.jptrzy.mining.helmet.mixin;
 import net.jptrzy.mining.helmet.Main;
 import net.jptrzy.mining.helmet.integrations.trinkets.MinerCharmTrinket;
 import net.jptrzy.mining.helmet.util.PlayerProperties;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -11,12 +12,14 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerProperties {
@@ -111,4 +114,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
 //            this.setPose(EntityPose.STANDING);
 //        }
 //    }
+
+
+    @Inject(method="getBlockBreakingSpeed", at=@At("RETURN"), cancellable = true)
+    public void getBlockBreakingSpeed(BlockState block, CallbackInfoReturnable<Float> cir) {
+        if (!this.onGround && ((PlayerProperties) this).isHooked()) {
+            cir.setReturnValue(cir.getReturnValue() * 5.0F);
+        }
+    }
 }

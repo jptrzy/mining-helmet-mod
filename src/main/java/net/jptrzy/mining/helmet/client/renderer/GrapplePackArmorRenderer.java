@@ -54,6 +54,8 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
                     vertZ = vertX;
                     vertX = 0;
                 }
+
+                matrices.pop();
             }
         }
     }
