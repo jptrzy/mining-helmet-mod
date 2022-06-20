@@ -87,8 +87,6 @@ public class Debug {
 
         BlockHitResult hit = player.world.raycast(new RaycastContext(player.getPos(), player.getPos().add(0, 16, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 
-        Main.LOGGER.warn(hit.getType());
-
         if(player.isCreative()){
             ((PlayerProperties) player).setHooked(false);
             return;
@@ -100,10 +98,6 @@ public class Debug {
             ((PlayerProperties) player).setHooked(true);
             ((PlayerProperties) player).setHookedBlock(hit.getBlockPos());
         }
-    }
-
-    public static void updateInput(float sidewaysSpeed, float forwardSpeed, boolean jumping, boolean sneaking, CallbackInfo ci){
-        Main.LOGGER.warn("UPDATE {}", jumping);
     }
 
     public static void renderChunkDebugInfo(Camera camera, CallbackInfo ci) {
