@@ -85,12 +85,18 @@ public class Debug {
 
     public static void tryHooking(MinecraftServer server, ServerPlayerEntity player){ //ServerPlayNetworkHandler networkHandler, PacketByteBuf buf, PacketSender sender
 
+        if (!player.getEquippedStack(EquipmentSlot.CHEST).isOf(ItemRegister.GRAPPLE_PACK)) {
+            return;
+        }
+
         BlockHitResult hit = player.world.raycast(new RaycastContext(player.getPos(), player.getPos().add(0, 16, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 
         if(player.isCreative()){
             ((PlayerProperties) player).setHooked(false);
             return;
         }
+
+
 
         if (((PlayerProperties) player).isHooked()) {
             ((PlayerProperties) player).setHooked(false);

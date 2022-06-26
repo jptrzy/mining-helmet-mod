@@ -49,8 +49,8 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
                 for (int i = 0; i < 2; i++) {
                     vertexConsumer.vertex(matrix4f, -vertX, -1.3F, -vertZ).color(0, 255, 0, 1).light(q).next();
                     vertexConsumer.vertex(matrix4f, vertX, -1.3F, vertZ).color(0, 255, 0, 1).light(q).next();
-                    vertexConsumer.vertex(matrix4f, -vertX, -length, -vertZ).color(0, 255, 0, 1).light(q).next();
-                    vertexConsumer.vertex(matrix4f, vertX, -length, vertZ).color(0, 255, 0, 1).light(q).next();
+                    vertexConsumer.vertex(matrix4f, -vertX, -length, -vertZ-.3F).color(0, 255, 0, 1).light(q).next();
+                    vertexConsumer.vertex(matrix4f, vertX, -length, vertZ-.3F).color(0, 255, 0, 1).light(q).next();
                     vertZ = vertX;
                     vertX = 0;
                 }

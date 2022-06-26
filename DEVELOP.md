@@ -9,17 +9,17 @@ grapple pack with enchantment or spomthing else
 Yes, you could, but with big restrains.
 
 ## ToCheck:
-* on death 
+* ~~on death~~
 * on tp
-* on destroy block
-* on placing block in the way
-* on gamemode change
-* on un-equipping
+* ~~on destroy block~~
+* ~~on placing block in the way~~
+* ~~on gamemode change~~
+* ~~on un-equipping~~
 * on logging out
 * on logging in
-* is flying
+* is flying 
 * is fall flying
-* is in submerged in fluid
+* is submerged in fluid
 
 # Interesting Mods
 * https://github.com/CammiePone/Hookshot

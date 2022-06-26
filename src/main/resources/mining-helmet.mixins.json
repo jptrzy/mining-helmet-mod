@@ -7,13 +7,16 @@
     "EnchantmentHelperMixin",
     "PlayerEntityMixin",
     "PlayerScreenHandlerMixin",
-    "SpyglassItemMixin"
+    "SpyglassItemMixin",
+    "ServerPlayerEntityMixin",
+    "ServerPlayerInteractionManagerMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",
     "WorldRendererMixin"
   ],
   "server": [
+
   ],
   "injectors": {
     "defaultRequire": 1

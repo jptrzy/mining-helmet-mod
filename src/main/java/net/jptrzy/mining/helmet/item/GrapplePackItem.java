@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.tag.TagKey;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.placementmodifier.PlacementModifierType;
 
@@ -31,11 +32,8 @@ public class GrapplePackItem extends ArmorItem {
         super.inventoryTick(stack, world, entity, slot, selected);
 
 
-        if(entity instanceof PlayerEntity player && player.getEquippedStack(EquipmentSlot.CHEST).equals(stack)
-                && ((PlayerProperties) player).isHooked()){
-//            Main.LOGGER.warn("GrapplePack Working");
-//            player.setVelocity(0, 0, 0);
-//            player.setMovementSpeed(0);
+        if (entity instanceof PlayerEntity player && player.getEquippedStack(EquipmentSlot.CHEST).equals(stack)
+                && ((PlayerProperties) player).isHooked()) {
 
             int i = 0;
             if (player.jumping) {
@@ -46,24 +44,31 @@ public class GrapplePackItem extends ArmorItem {
             }
 
 //            Main.LOGGER.warn(i);
-            if(i != 0){
+            if (i != 0) {
                 double y = player.getVelocity().getY();
                     if((i > 0) != (y > 0)){
                         y = 0;
                     }
                 y = Math.max(-0.4, Math.min(0.4, y + i * .05));
                 player.setVelocity(0, y, 0);
-            }else{
+            } else {
                 player.setVelocity(0, 0, 0);
             }
 
+            BlockPos pos =  ((PlayerProperties) player).getHookedBlock();
 
-//
-//            player.getFlag(1);
-//
-//            player.jum
-            if(player.isOnGround()){
+            // Check if block wasn't broken or player landed on ground or player above hooked block
+            if (player.isOnGround() || world.getBlockState(pos).isAir() || pos.getY()-player.getBlockPos().getY()<1 ) {
                 ((PlayerProperties) player).setHooked(false);
+                return;
+            }
+
+            // Check if block between player and hooked block are all air.
+            for (i=1; i<pos.getY()-player.getBlockPos().getY()-1; i++) {
+                if(!world.getBlockState(pos.add(0,-i,0)).isAir()){
+                    ((PlayerProperties) player).setHooked(false);
+                    return;
+                }
             }
         }
     }
