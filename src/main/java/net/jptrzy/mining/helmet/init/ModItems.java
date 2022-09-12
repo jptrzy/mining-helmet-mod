@@ -1,4 +1,4 @@
-package net.jptrzy.mining.helmet.registry;
+package net.jptrzy.mining.helmet.init;
 
 import net.jptrzy.mining.helmet.Main;
 import net.jptrzy.mining.helmet.integrations.trinkets.GrapplePackTrinket;
@@ -10,12 +10,11 @@ import net.jptrzy.mining.helmet.item.MiningHelmet;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemRegister {
+public class ModItems {
 
     public static Map<String, Item> items = new HashMap<>();
     public static Map<String, Class<? extends OptionalTrinket>> trinkets = new HashMap<>();

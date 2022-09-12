@@ -1,4 +1,8 @@
 # GrapplePack Assumptions - how theoretically should it works
+## Small
+- [ ] disable sneaking *animation*
+- [ ] gives small possibility for movement not only in y-axis
+
 ## Unhook Player when:
 - [X] killed (death)
 - [ ] teleported (just in case)

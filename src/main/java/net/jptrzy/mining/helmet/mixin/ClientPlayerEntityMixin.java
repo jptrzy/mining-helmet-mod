@@ -4,10 +4,10 @@ import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.jptrzy.mining.helmet.Debug;
 import net.jptrzy.mining.helmet.Main;
+import net.jptrzy.mining.helmet.init.ModComponents;
 import net.jptrzy.mining.helmet.network.NetworkHandler;
 import net.jptrzy.mining.helmet.network.message.TryHookingMessage;
 import net.jptrzy.mining.helmet.network.message.UpdateInputMessage;
-import net.jptrzy.mining.helmet.util.PlayerProperties;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -26,12 +26,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
-//    @Inject(method = "tickMovement", at=@At("RETURN"))
-//    public void tickMovement(CallbackInfo ci) {
-//        Debug.tickMovement(ci, (ClientPlayerEntity) (Object) this);
-//    }
-
-    // net/minecraft/client/network/ClientPlayerEntity.getAbilities ()Lnet/minecraft/entity/player/PlayerAbilities
 
     @Shadow public Input input;
     @Shadow @Final public ClientPlayNetworkHandler networkHandler;
@@ -56,7 +50,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Inject(method="sendMovementPackets", at=@At("HEAD"))
     private void sendMovementPackets(CallbackInfo ci) {
-        if(((PlayerProperties) this).isHooked()){
+        if(ModComponents.GRAPPLE_PACK.get(this).isHooked()){
             NetworkHandler.sendToServer(new UpdateInputMessage(this.jumping));
         }
     }

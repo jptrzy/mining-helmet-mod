@@ -1,8 +1,6 @@
 package net.jptrzy.mining.helmet.mixin;
 
-import net.jptrzy.mining.helmet.Main;
-import net.jptrzy.mining.helmet.util.PlayerProperties;
-import net.minecraft.nbt.NbtCompound;
+import net.jptrzy.mining.helmet.init.ModComponents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.world.GameMode;
@@ -23,7 +21,7 @@ public class ServerPlayerInteractionManagerMixin {
     public void setGameMode(GameMode gameMode, @Nullable GameMode previousGameMode, CallbackInfo ci) {
         // UnHook Player on GameMode change
         if (previousGameMode != null && previousGameMode.isSurvivalLike() && (gameMode.isCreative() || gameMode.getId() == 3)) {
-            ((PlayerProperties) player).setHooked(false);
+            ModComponents.GRAPPLE_PACK.get(player).setHooked(false);
         }
     }
 }

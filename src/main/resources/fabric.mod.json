@@ -22,7 +22,9 @@
     "main": ["net.jptrzy.mining.helmet.Main"],
     "client": ["net.jptrzy.mining.helmet.client.Client"],
     "server": ["net.jptrzy.mining.helmet.Server"],
-    "dynamiclights": ["net.jptrzy.mining.helmet.Light"]
+
+    "dynamiclights": ["net.jptrzy.mining.helmet.Light"],
+    "cardinal-components": ["net.jptrzy.mining.helmet.init.ModComponents"]
   },
 
   "mixins": [ "mining-helmet.mixins.json" ],
@@ -30,6 +32,8 @@
 
   "depends": {
     "lambdynlights": ">=2.1.1",
+    "cardinal-components-base": ">=3.0.0",
+    "cardinal-components-entity": ">=3.0.0",
 
     "fabricloader": ">=0.14.7",
     "fabric": "*",
@@ -39,5 +43,10 @@
   "suggests": {
     "trinkets": ">=3.4.0",
     "trinkets-curios-theme" : "*"
+  },
+  "custom": {
+    "cardinal-components": [
+      "mining_helmet:grapple_pack"
+    ]
   }
 }

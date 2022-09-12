@@ -3,13 +3,11 @@ package net.jptrzy.mining.helmet.client.renderer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
-import net.jptrzy.mining.helmet.Main;
-import net.jptrzy.mining.helmet.util.PlayerProperties;
-import net.minecraft.client.MinecraftClient;
+import net.jptrzy.mining.helmet.components.GrapplePackComponent;
+import net.jptrzy.mining.helmet.init.ModComponents;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,9 +20,9 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, BipedEntityModel<LivingEntity> contextModel) {
 
         if(entity instanceof PlayerEntity player) {
-            PlayerProperties prop = (PlayerProperties) player;
-            if(prop.isHooked()) {
-                BlockPos pos = prop.getHookedBlock();
+            GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(player);
+            if(gpc.isHooked()) {
+                BlockPos pos = gpc.getHookedBlockPos();
                 float length = pos.getY() - (float) entity.getPos().y + .5F;
 
                 matrices.push();

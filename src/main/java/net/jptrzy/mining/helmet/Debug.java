@@ -2,17 +2,12 @@ package net.jptrzy.mining.helmet;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.netty.buffer.Unpooled;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.jptrzy.mining.helmet.block.AbstractHiddenOreBlock;
+import net.jptrzy.mining.helmet.components.GrapplePackComponent;
+import net.jptrzy.mining.helmet.init.ModComponents;
 import net.jptrzy.mining.helmet.network.NetworkHandler;
 import net.jptrzy.mining.helmet.network.message.TryHookingMessage;
-import net.jptrzy.mining.helmet.registry.ItemRegister;
-import net.jptrzy.mining.helmet.util.PlayerProperties;
-import net.minecraft.block.Block;
+import net.jptrzy.mining.helmet.init.ModItems;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
@@ -24,18 +19,13 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.TextColor;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
@@ -77,40 +67,42 @@ public class Debug {
     }
 
     public static void getEquipmentLevel(Enchantment enchantment, LivingEntity entity, CallbackInfoReturnable<Integer> cir){
-        // UnHook Player on equipping GrapplePack
-        if(entity instanceof PlayerEntity player && ((PlayerProperties) player).isHooked()
-                && !player.getEquippedStack(EquipmentSlot.CHEST).isOf(ItemRegister.GRAPPLE_PACK) ){
-            ((PlayerProperties) player).setHooked(false);
+        // UnHook Player on unequipping GrapplePack
+        if (entity instanceof PlayerEntity player) {
+            GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(player);
+            if (gpc.isHooked() && !player.getEquippedStack(EquipmentSlot.CHEST).isOf(ModItems.GRAPPLE_PACK)) {
+                gpc.setHooked(false);
+            }
         }
     }
 
     public static void tryHooking(MinecraftServer server, ServerPlayerEntity player){ //ServerPlayNetworkHandler networkHandler, PacketByteBuf buf, PacketSender sender
+        GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(player);
 
-        if (!player.getEquippedStack(EquipmentSlot.CHEST).isOf(ItemRegister.GRAPPLE_PACK)) {
+        if (!player.getEquippedStack(EquipmentSlot.CHEST).isOf(ModItems.GRAPPLE_PACK)) {
             return;
         }
 
         BlockHitResult hit = player.world.raycast(new RaycastContext(player.getPos(), player.getPos().add(0, 16, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 
-        if(player.isCreative()){
-            ((PlayerProperties) player).setHooked(false);
+        if(player.isCreative()) {
+            gpc.setHooked(false);
             return;
         }
 
-
-
-        if (((PlayerProperties) player).isHooked()) {
-            ((PlayerProperties) player).setHooked(false);
+        if (gpc.isHooked()) {
+            gpc.setHooked(false);
         } else if (hit.getType() == HitResult.Type.BLOCK) {
-            ((PlayerProperties) player).setHooked(true);
-            ((PlayerProperties) player).setHookedBlock(hit.getBlockPos());
+            gpc.setHooked(true);
+            gpc.setHookedBlockPos(hit.getBlockPos());
         }
     }
 
     public static void renderChunkDebugInfo(Camera camera, CallbackInfo ci) {
-        if (Main.DEBUG && ((PlayerProperties) MinecraftClient.getInstance().player).isHooked()) {
+        GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(MinecraftClient.getInstance().player);
+        if (Main.DEBUG && gpc.isHooked()) {
 
-            BlockPos pos = ((PlayerProperties) MinecraftClient.getInstance().player).getHookedBlock();
+            BlockPos pos = gpc.getHookedBlockPos();
             String info = "Dis " + String.format("%.5g%n", pos.getY() - MinecraftClient.getInstance().player.getY()) + "|";
 
             RenderSystem.enableBlend();
