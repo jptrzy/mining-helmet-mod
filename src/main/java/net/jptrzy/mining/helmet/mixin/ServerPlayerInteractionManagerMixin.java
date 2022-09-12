@@ -20,8 +20,9 @@ public class ServerPlayerInteractionManagerMixin {
     @Shadow @Final protected ServerPlayerEntity player;
 
     @Inject(method="setGameMode", at=@At("RETURN"), cancellable = true)
-    public void setGameMode(GameMode gameMode, GameMode previousGameMode, CallbackInfo ci) {
-        if (previousGameMode.isSurvivalLike() && (gameMode.isCreative() || gameMode.getId() == 3)) {
+    public void setGameMode(GameMode gameMode, @Nullable GameMode previousGameMode, CallbackInfo ci) {
+        // UnHook Player on GameMode change
+        if (previousGameMode != null && previousGameMode.isSurvivalLike() && (gameMode.isCreative() || gameMode.getId() == 3)) {
             ((PlayerProperties) player).setHooked(false);
         }
     }

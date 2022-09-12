@@ -1,33 +1,22 @@
-# GrapplePack
-## When could be disconnected / rope pulled back?
-- [ ] when teleported - need to check if too far from the target when setPose or something like that
-- [ ] when attacked - it could be annoying for players or a gameplay feature that could give player an option to upgrade his
-grapple pack with enchantment or spomthing else
-- [ ] when block that grapple pack is connected to breaks
+# GrapplePack Assumptions - how theoretically should it works
+## Unhook Player when:
+- [X] killed (death)
+- [ ] teleported (just in case)
+- [ ] moved out the grappled borders
+- [X] to hooked block is destroyed
+- [X] block is placed between player and hooked block
+- [X] unequip grapple pack
+- [X] player's GameMode change
+- [ ] player becoming passenger / start's riding anything
+- [X] player landed on ground
 
-## Could you swing on it?
-Yes, you could, but with big restrains.
+- [ ] logged out (optional)
+- [ ] damaged (optional)
+- [ ] submerge in fluid (optional)
 
-## ToCheck:
-* ~~on death~~
-* on tp
-* ~~on destroy block~~
-* ~~on placing block in the way~~
-* ~~on gamemode change~~
-* ~~on un-equipping~~
-* on logging out
-* on logging in
-* is flying 
-* is fall flying
-* is submerged in fluid
-
-# Interesting Mods
-* https://github.com/CammiePone/Hookshot
-* https://github.com/ModsByLeo/SimpleAngelRing
-* https://github.com/TurtleArmyMc/DoubleJump
-* https://github.com/shedaniel/IronJetpacks
-
-
-# TODO
+## Can't hook when:
+- [ ] submerge in fluid (optional)
+- [ ] flying or fall flying
+- [ ] player is a passenger / is ridin
 
 

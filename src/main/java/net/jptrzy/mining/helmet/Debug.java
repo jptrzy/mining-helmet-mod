@@ -77,6 +77,7 @@ public class Debug {
     }
 
     public static void getEquipmentLevel(Enchantment enchantment, LivingEntity entity, CallbackInfoReturnable<Integer> cir){
+        // UnHook Player on equipping GrapplePack
         if(entity instanceof PlayerEntity player && ((PlayerProperties) player).isHooked()
                 && !player.getEquippedStack(EquipmentSlot.CHEST).isOf(ItemRegister.GRAPPLE_PACK) ){
             ((PlayerProperties) player).setHooked(false);

@@ -96,6 +96,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
         }
     }
 
+    // UnHook Player on death
     @Inject(method="onDeath", at=@At("RETURN"), cancellable = true)
     public void onDeath(DamageSource damageSource, CallbackInfo ci) {
         this.setHooked(false);

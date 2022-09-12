@@ -31,7 +31,6 @@ public class GrapplePackItem extends ArmorItem {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
-
         if (entity instanceof PlayerEntity player && player.getEquippedStack(EquipmentSlot.CHEST).equals(stack)
                 && ((PlayerProperties) player).isHooked()) {
 
@@ -57,13 +56,13 @@ public class GrapplePackItem extends ArmorItem {
 
             BlockPos pos =  ((PlayerProperties) player).getHookedBlock();
 
-            // Check if block wasn't broken or player landed on ground or player above hooked block
+            // UnHook Player if hooked block is ait or if landed
             if (player.isOnGround() || world.getBlockState(pos).isAir() || pos.getY()-player.getBlockPos().getY()<1 ) {
                 ((PlayerProperties) player).setHooked(false);
                 return;
             }
 
-            // Check if block between player and hooked block are all air.
+            // UnHook Player if blocks between player and hooked block arend air
             for (i=1; i<pos.getY()-player.getBlockPos().getY()-1; i++) {
                 if(!world.getBlockState(pos.add(0,-i,0)).isAir()){
                     ((PlayerProperties) player).setHooked(false);
@@ -83,6 +82,13 @@ public class GrapplePackItem extends ArmorItem {
 //        tag.putBoolean("Enable", enabled);
 //    }
 
-
+    // UnHook Player on GameMode change
+//    public static void onDeath(PlayerEntity player){
+//        ((PlayerProperties) player).setHooked(false);
+//    }
+//
+//    public static void onGameModeChange(PlayerEntity player){
+//        ((PlayerProperties) player).setHooked(false);
+//    }
 
 }
