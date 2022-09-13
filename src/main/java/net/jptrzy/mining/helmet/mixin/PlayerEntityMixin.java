@@ -53,7 +53,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
             movementInput.multiply(1, 0, 1);
 
-            Vec3d vec = movementInputToVelocity(movementInput, .04f, this.getYaw());
+            Vec3d vec = movementInputToVelocity(movementInput, .07f, this.getYaw());
 
             BlockPos block = gpc.getHookedBlockPos();
 //            Vec3d diff = this.getPos().add(-block.getX()-0.5, -this.getPos().y, -block.getZ()-0.5);
@@ -63,8 +63,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 vec.getZ() -block.getZ()-0.5
             );
 
-            if (diff.length() < 3) {
+            if (diff.length() > 0.1) {
                 this.setVelocity(this.getVelocity().add(diff.multiply(-0.05)));
+            }
+
+
+            if (diff.length() < 2.5) {
                 this.setVelocity(this.getVelocity().add(vec));
             }
 

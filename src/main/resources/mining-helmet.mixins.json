@@ -6,11 +6,8 @@
   "mixins": [
     "EnchantmentHelperMixin",
     "PlayerEntityMixin",
-    "PlayerScreenHandlerMixin",
     "SpyglassItemMixin",
-    "ServerPlayerEntityMixin",
-    "ServerPlayerInteractionManagerMixin",
-    "PlayerEntityRendererMixin"
+    "ServerPlayerInteractionManagerMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",

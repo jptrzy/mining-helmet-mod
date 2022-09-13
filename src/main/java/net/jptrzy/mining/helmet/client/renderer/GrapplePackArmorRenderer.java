@@ -23,29 +23,50 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
         if(entity instanceof PlayerEntity player) {
             GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(player);
             if(gpc.isHooked()) {
-                BlockPos pos = gpc.getHookedBlockPos();
-                float length = pos.getY() - (float) entity.getPos().y + .5F;
+//                BlockPos pos = gpc.getHookedBlockPos();
+//                float length = pos.getY() - (float) entity.getPos().y + .5F;
+//
+//                matrices.push();
+//
+//
+//                matrices.translate(0, 1.5F, .3F);
+//                matrices.scale(2 / 1.9F, 2 / 1.9F, 2 / 1.9F);
+                BlockPos block = gpc.getHookedBlockPos();
+
+                Vec3f diff = new Vec3f(entity.getPos().add(
+                        -block.getX()-0.5,
+                        -entity.getPos().y,
+                        -block.getZ()-0.5
+                ));
 
                 matrices.push();
 
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(true);
 
-                matrices.translate(0, 1.5F, .3F);
-                matrices.scale(2 / 1.9F, 2 / 1.9F, 2 / 1.9F);
+                matrices.scale(2 / 1.888f, 2 / 1.888f, 2 / 1.888f);
+                matrices.translate(0, 1.414-1.4, 0);
 
-                int q = entity.world.getLightLevel(LightType.BLOCK, pos);
+                matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.bodyYaw));
 
-                float vertX = .03F;
-                float vertZ = 0;
+                Vec3f vec = new Vec3f(0, 0, 0.3f);
+                vec.rotate(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.bodyYaw));
 
                 VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getLeash());
                 MatrixStack.Entry entry = matrices.peek();
                 Matrix4f matrix4f = entry.getPositionMatrix();
 
+
+
+                float length = block.getY() - (float) entity.getPos().y - 1.4f;
+                float vertX = .03F;
+                float vertZ = 0;
+
                 for (int i = 0; i < 2; i++) {
-                    vertexConsumer.vertex(matrix4f, -vertX, -1.3F, -vertZ).color(0, 255, 0, 1).light(q).next();
-                    vertexConsumer.vertex(matrix4f, vertX, -1.3F, vertZ).color(0, 255, 0, 1).light(q).next();
-                    vertexConsumer.vertex(matrix4f, -vertX, -length, -vertZ-.3F).color(0, 255, 0, 1).light(q).next();
-                    vertexConsumer.vertex(matrix4f, vertX, -length, vertZ-.3F).color(0, 255, 0, 1).light(q).next();
+                    vertexConsumer.vertex(matrix4f, -vertX-diff.getX(), -length, -vertZ+diff.getZ()).color(0, 255, 255, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, vertX-diff.getX(), -length, vertZ+diff.getZ()).color(0, 255, 255, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, -vertX-vec.getX(), 0, -vertZ+vec.getZ()).color(0, 255, 255, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, vertX-vec.getX(), 0, vertZ+vec.getZ()).color(0, 255, 255, 1).light(light).next();
                     vertZ = vertX;
                     vertX = 0;
                 }
