@@ -9,7 +9,8 @@
     "PlayerScreenHandlerMixin",
     "SpyglassItemMixin",
     "ServerPlayerEntityMixin",
-    "ServerPlayerInteractionManagerMixin"
+    "ServerPlayerInteractionManagerMixin",
+    "PlayerEntityRendererMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",

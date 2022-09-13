@@ -8,13 +8,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,12 +46,42 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     Remove possibility for player movement while in air.
     Rest of it just remove fall damage while landing when hooked and ensure that everything works ok (like anim...).
     */
-    @Inject(method="travel", at=@At("HEAD"), cancellable = true) public void travel(CallbackInfo ci) {
-        if(ModComponents.GRAPPLE_PACK.get(this).isHooked()){
+    @Inject(method="travel", at=@At("HEAD"), cancellable = true) public void travel(Vec3d movementInput, CallbackInfo ci) {
+        GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(this);
+        if(gpc.isHooked()){
+            ModComponents.GRAPPLE_PACK.get(this).isHooked();
+
+            movementInput.multiply(1, 0, 1);
+
+            Vec3d vec = movementInputToVelocity(movementInput, .04f, this.getYaw());
+
+            BlockPos block = gpc.getHookedBlockPos();
+//            Vec3d diff = this.getPos().add(-block.getX()-0.5, -this.getPos().y, -block.getZ()-0.5);
+            Vec3d diff = this.getPos().add(
+                vec.getX() -block.getX()-0.5,
+                vec.getY() -this.getPos().y,
+                vec.getZ() -block.getZ()-0.5
+            );
+
+            if (diff.length() < 3) {
+                this.setVelocity(this.getVelocity().add(diff.multiply(-0.05)));
+                this.setVelocity(this.getVelocity().add(vec));
+            }
+
+//            Main.LOGGER.warn("Diff {}", diff.length());
+
+//            new Vec3d(gpc.getHookedBlockPos());
+
+
+
+
+            //            Entity.movementInputToVelocity(movementInput, 1, this.getYaw());
+
+
             this.move(MovementType.SELF, this.getVelocity());
-            this.increaseTravelMotionStats(0, 0, 0);
             this.updateLimbs(this, this instanceof Flutterer);
             this.fallDistance = 0;
+            this.increaseTravelMotionStats(0, 0, 0); // Update difference
             ci.cancel();
         }
     }

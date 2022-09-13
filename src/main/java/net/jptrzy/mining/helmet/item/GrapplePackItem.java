@@ -32,6 +32,7 @@ public class GrapplePackItem extends ArmorItem {
             GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(entity);
             if (gpc.isHooked()) {
                 int dir = 0;
+                player.getMovementDirection();
                 if (player.jumping) {
                     dir++;
                 }
