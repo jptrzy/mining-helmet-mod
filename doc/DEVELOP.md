@@ -22,6 +22,6 @@
 ## Can't hook when:
 - [ ] submerge in fluid (optional)
 - [ ] flying or fall flying
-- [ ] player is a passenger / is ridin
+- [X] player is a passenger / is riding
 
 

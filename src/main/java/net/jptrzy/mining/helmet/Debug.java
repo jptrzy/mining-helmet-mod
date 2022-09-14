@@ -76,19 +76,19 @@ public class Debug {
         }
     }
 
-    public static void tryHooking(MinecraftServer server, ServerPlayerEntity player){ //ServerPlayNetworkHandler networkHandler, PacketByteBuf buf, PacketSender sender
+    public static void tryHooking(MinecraftServer server, ServerPlayerEntity player){
         GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(player);
 
         if (!player.getEquippedStack(EquipmentSlot.CHEST).isOf(ModItems.GRAPPLE_PACK)) {
             return;
         }
 
-        BlockHitResult hit = player.world.raycast(new RaycastContext(player.getPos(), player.getPos().add(0, 16, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
-
-        if(player.isCreative()) {
+        if(player.isCreative() || player.hasVehicle()) {
             gpc.setHooked(false);
             return;
         }
+
+        BlockHitResult hit = player.world.raycast(new RaycastContext(player.getPos(), player.getPos().add(0, 16, 0), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 
         if (gpc.isHooked()) {
             gpc.setHooked(false);
