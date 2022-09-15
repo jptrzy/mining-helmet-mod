@@ -53,9 +53,11 @@ public class GrapplePackItem extends ArmorItem {
 
                 BlockPos pos = gpc.getHookedBlockPos();
 
-                // UnHook Player if hooked block is ait or if landed
-                if (player.isOnGround() || world.getBlockState(pos).isAir() || player.getPos().getY()+1.7 >= pos.getY() ) {
-                    Main.LOGGER.info("Unhook - ground {} {}", pos, player.isOnGround());
+                // UnHook Player if hooked block is ait / landed / start riding
+                if (player.isOnGround()
+                        || world.getBlockState(pos).isAir()
+                        || player.getPos().getY()+1.7 >= pos.getY()
+                        || player.hasVehicle() ) {
                     gpc.setHooked(false);
                     return;
                 }

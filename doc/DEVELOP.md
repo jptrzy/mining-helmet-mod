@@ -11,7 +11,7 @@
 - [X] block is placed between player and hooked block
 - [X] unequip grapple pack
 - [X] player's GameMode change
-- [ ] player becoming passenger / start's riding anything
+- [X] player becoming passenger / start's riding anything
 - [X] player landed on ground
 - [ ] dimension/world change
 
