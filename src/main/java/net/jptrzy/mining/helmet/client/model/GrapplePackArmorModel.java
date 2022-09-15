@@ -29,15 +29,18 @@ public class GrapplePackArmorModel extends BipedEntityModel<LivingEntity> {
         ModelPartData modelPartData = data.getRoot().getChild("body");
         // Start GrapplePackModel
 
-        ModelPartData cogwheel = modelPartData.addChild("cogwheel", ModelPartBuilder.create().uv(0, 0).cuboid(-0.5F, -2.0F, -0.55F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-2.0F, -0.5F, -0.55F, 4.0F, 1.0F, 1.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-1.0F, -1.0F, -0.3F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 6.0F, 6.3F));
+        ModelPartData cogwheel = modelPartData.addChild("cogwheel", ModelPartBuilder.create().uv(12, 16).cuboid(-0.5F, -2.0F, -0.55F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F))
+                .uv(0, 16).cuboid(-1.0F, -1.0F, -0.3F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 6.0F, 6.8F));
 
-        ModelPartData cube_r1 = cogwheel.addChild("cube_r1", ModelPartBuilder.create().uv(0, 0).cuboid(-0.5F, -2.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-2.0F, -0.5F, -0.5F, 4.0F, 1.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -0.05F, 0.0F, 0.0F, -0.7854F));
+        ModelPartData cube_r1 = cogwheel.addChild("cube_r1", ModelPartBuilder.create().uv(12, 16).cuboid(-0.5F, -2.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -0.05F, 0.0F, 0.0F, -1.5708F));
 
-        ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(0, 0).cuboid(-2.5F, -24.0F, 2.0F, 5.0F, 1.0F, 3.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-3.5F, -23.0F, 2.0F, 7.0F, 10.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        ModelPartData cube_r2 = cogwheel.addChild("cube_r2", ModelPartBuilder.create().uv(12, 16).cuboid(-0.5F, -2.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -0.05F, 0.0F, 0.0F, -0.7854F));
+
+        ModelPartData cube_r3 = cogwheel.addChild("cube_r3", ModelPartBuilder.create().uv(12, 16).cuboid(-0.5F, -2.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, -0.05F, 0.0F, 0.0F, 0.7854F));
+
+        ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(32, 0).cuboid(1.0F, -23.0F, 2.3F, 3.0F, 4.0F, 4.0F, new Dilation(0.0F))
+                .uv(48, 0).cuboid(-4.0F, -23.0F, 2.3F, 3.0F, 4.0F, 4.0F, new Dilation(0.0F))
+                .uv(0, 0).cuboid(-4.0F, -19.0F, 2.3F, 8.0F, 6.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
         // End GrapplePackModel
         return data.getRoot().createPart(64, 64);

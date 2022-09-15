@@ -7,15 +7,18 @@ import net.jptrzy.mining.helmet.Main;
 import net.jptrzy.mining.helmet.client.model.GrapplePackArmorModel;
 import net.jptrzy.mining.helmet.components.GrapplePackComponent;
 import net.jptrzy.mining.helmet.init.ModComponents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.world.LightType;
@@ -30,10 +33,11 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
         VertexConsumer vertexConsumer;
         float length = 0;
 
+        matrices.push();
+
         if(entity instanceof PlayerEntity player) {
             GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(player);
             if(gpc.isHooked()) {
-                matrices.push();
                 BlockPos block = gpc.getHookedBlockPos();
 
                 Vec3f diff = new Vec3f(entity.getPos().add(
@@ -62,17 +66,32 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
                 float vertZ = 0;
 
                 for (int i = 0; i < 2; i++) {
-                    vertexConsumer.vertex(matrix4f, -vertX-diff.getX(), -length, -vertZ+diff.getZ()).color(0, 255, 255, 1).light(light).next();
-                    vertexConsumer.vertex(matrix4f, vertX-diff.getX(), -length, vertZ+diff.getZ()).color(0, 255, 255, 1).light(light).next();
-                    vertexConsumer.vertex(matrix4f, -vertX-vec.getX(), 0, -vertZ+vec.getZ()).color(0, 255, 255, 1).light(light).next();
-                    vertexConsumer.vertex(matrix4f, vertX-vec.getX(), 0, vertZ+vec.getZ()).color(0, 255, 255, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, -vertX-diff.getX(), -length+.2f, -vertZ+diff.getZ()).color(112, 67, 12, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, vertX-diff.getX(), -length+.2f, vertZ+diff.getZ()).color(112, 67, 12, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, -vertX-vec.getX(), 0, -vertZ+vec.getZ()).color(112, 67, 12, 1).light(light).next();
+                    vertexConsumer.vertex(matrix4f, vertX-vec.getX(), 0, vertZ+vec.getZ()).color(112, 67, 12, 1).light(light).next();
                     vertZ = vertX;
                     vertX = 0;
                 }
 
                 matrices.pop();
+                matrices.push();
+
+                matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.bodyYaw));
+                matrices.translate(-diff.getX(), -length, diff.getZ());
+                matrices.scale(.8f, .8f, .8f);
+            } else {
+                matrices.scale(.8f, .8f, .8f);
+                matrices.translate(0, .2, .4);
             }
         }
+
+
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(135));
+
+        MinecraftClient.getInstance().getItemRenderer().renderItem(new ItemStack(Items.SPECTRAL_ARROW), ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
+
+        matrices.pop();
 
         GrapplePackArmorModel model = getModel();
         contextModel.setAttributes(model);
@@ -83,8 +102,6 @@ public class GrapplePackArmorRenderer implements ArmorRenderer {
 
         if (length != 0) {
             model.cogwheel.roll = length/2;
-        } else if (model.cogwheel.roll > 0) {
-            model.cogwheel.roll -= 0.1;
         }
 
         vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumers, RenderLayer.getArmorCutoutNoCull(GRAPPLE_PACK_ARMOR_MODEL_TEXTURE), false, stack.hasGlint());
