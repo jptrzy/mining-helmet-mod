@@ -23,7 +23,9 @@
     "client": ["net.jptrzy.mining.helmet.client.Client"],
     "server": ["net.jptrzy.mining.helmet.Server"],
 
-    "dynamiclights": ["net.jptrzy.mining.helmet.Light"],
+    "dynamiclights": [
+      "net.jptrzy.mining.helmet.integrations.dynamic.lights.Light"
+    ],
     "cardinal-components": ["net.jptrzy.mining.helmet.init.ModComponents"]
   },
 

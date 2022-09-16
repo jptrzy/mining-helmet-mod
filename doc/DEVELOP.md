@@ -15,12 +15,12 @@
 - [X] player landed on ground
 - [ ] dimension/world change
 
-- [ ] logged out (optional)
+- [ ] ~~logged out (optional)~~ still is hooked
 - [ ] damaged (optional)
-- [ ] submerge in fluid (optional)
+- [ ] ~~submerge in fluid (optional)~~ after submerging you can't use GP
 
 ## Can't hook when:
-- [ ] submerge in fluid (optional)
+- [X] submerge in fluid (optional)
 - [ ] flying or fall flying
 - [X] player is a passenger / is riding
 

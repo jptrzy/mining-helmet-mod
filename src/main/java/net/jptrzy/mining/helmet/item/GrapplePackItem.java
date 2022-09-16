@@ -11,6 +11,7 @@ import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.stream.Stream;
@@ -41,14 +42,16 @@ public class GrapplePackItem extends ArmorItem {
                 }
 
                 if (dir != 0) {
-                    double y = player.getVelocity().getY();
+                    Vec3d old = player.getVelocity();
+                    double y = old.getY();
                     if((dir > 0) != (y > 0)){
                         y = 0;
                     }
                     y = Math.max(-0.4, Math.min(0.4, y + dir * .05));
-                    player.setVelocity(0, y, 0);
+                    player.setVelocity(old.getX(), y, old.getZ());
                 } else {
                     player.setVelocity(0, 0, 0);
+//                    player.setVelocity(player.getVelocity().multiply(1, 0, 1));
                 }
 
                 BlockPos pos = gpc.getHookedBlockPos();

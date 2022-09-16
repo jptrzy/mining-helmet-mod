@@ -1,7 +1,5 @@
 package net.jptrzy.mining.helmet.network.message;
 
-import net.jptrzy.mining.helmet.Debug;
-import net.jptrzy.mining.helmet.Main;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ada",
+    "aca",
+    "aba"
+  ],
+  "key": {
+    "a": {"item": "minecraft:copper_ingot"},
+    "b": {"item": "minecraft:lead"},
+    "c": {"item": "minecraft:oak_planks"},
+    "d": {"item": "minecraft:spectral_arrow"}
+  },
+  "result": {
+    "item": "mining_helmet:grapple_pack"
+  }
+}

@@ -49,11 +49,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method="travel", at=@At("HEAD"), cancellable = true) public void travel(Vec3d movementInput, CallbackInfo ci) {
         GrapplePackComponent gpc = ModComponents.GRAPPLE_PACK.get(this);
         if(gpc.isHooked()){
-            ModComponents.GRAPPLE_PACK.get(this).isHooked();
 
             movementInput.multiply(1, 0, 1);
 
-            Vec3d vec = movementInputToVelocity(movementInput, .07f, this.getYaw());
+            Vec3d vec = movementInputToVelocity(movementInput, .1f, this.getYaw());
 
             BlockPos block = gpc.getHookedBlockPos();
 //            Vec3d diff = this.getPos().add(-block.getX()-0.5, -this.getPos().y, -block.getZ()-0.5);
@@ -63,26 +62,28 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 vec.getZ() -block.getZ()-0.5
             );
 
-            if (diff.length() > 0.1) {
+            double length = diff.length();
+
+            if (length > 0.1) {
                 this.setVelocity(this.getVelocity().add(diff.multiply(-0.05)));
             }
 
+            double rope_length = gpc.getHookedBlockPos().getY() - (float) this.getPos().y - 1.4f;
 
-            if (diff.length() < 2.5) {
+            if (length < Math.sqrt(rope_length)) {
                 this.setVelocity(this.getVelocity().add(vec));
             }
 
-//            Main.LOGGER.warn("Diff {}", diff.length());
-
-//            new Vec3d(gpc.getHookedBlockPos());
-
-
-
-
-            //            Entity.movementInputToVelocity(movementInput, 1, this.getYaw());
-
 
             this.move(MovementType.SELF, this.getVelocity());
+
+//            if (movementInput == Vec3d.ZERO) {
+//                this.setVelocity(this.getVelocity().multiply(.5, 1, .5));
+//            } else {
+//                this.setVelocity(this.getVelocity().multiply(.8, 1, .8));
+//
+//            }
+
             this.updateLimbs(this, this instanceof Flutterer);
             this.fallDistance = 0;
             this.increaseTravelMotionStats(0, 0, 0); // Update difference

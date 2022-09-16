@@ -1,9 +1,6 @@
 package net.jptrzy.mining.helmet.mixin;
 
 import com.mojang.authlib.GameProfile;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.jptrzy.mining.helmet.Debug;
-import net.jptrzy.mining.helmet.Main;
 import net.jptrzy.mining.helmet.init.ModComponents;
 import net.jptrzy.mining.helmet.network.NetworkHandler;
 import net.jptrzy.mining.helmet.network.message.TryHookingMessage;
@@ -14,7 +11,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.encryption.PlayerPublicKey;
-import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,6 +26,8 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
     @Shadow public Input input;
     @Shadow @Final public ClientPlayNetworkHandler networkHandler;
 
+
+
     private ClientPlayerEntityMixin(ClientWorld world, GameProfile profile, @Nullable PlayerPublicKey publicKey) {
         super(world, profile, publicKey);
     }
@@ -38,12 +36,12 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         value="INVOKE", ordinal=2, shift= At.Shift.BY, by=-1,
         target="net/minecraft/client/network/ClientPlayerEntity.getAbilities ()Lnet/minecraft/entity/player/PlayerAbilities;"
     ))
-    public void tickMovement(CallbackInfo ci, boolean bl) {
-        if(!bl && this.input.jumping && !this.getAbilities().flying){
-            if(this.abilityResyncCountdown == 0){
+    public void tickMovement(CallbackInfo ci, boolean bl, boolean bl4) {
+        if(!bl && this.input.jumping && !this.getAbilities().flying && !this.isCreative()){
+            if(this.abilityResyncCountdown == 0 && this.input.jumping && !bl4){
                 this.abilityResyncCountdown = 7;
             }else{
-                Debug.tickMovement(ci, (ClientPlayerEntity) (Object) this, bl);
+                NetworkHandler.sendToServer(new TryHookingMessage());
             }
         }
     }

@@ -4,5 +4,7 @@
   "tooltip.mining_helmet.miner_charm.trinket_not_loaded" : "Without Trinkets Mod this item is useless.",
 
   "item.mining_helmet.mining_helmet": "Mining Helmet",
-  "item.mining_helmet.miner_charm": "Soul in the bottle"
+  "item.mining_helmet.miner_charm": "Soul in the bottle",
+
+  "item.mining_helmet.grapple_pack": "GrapplePack"
 }
