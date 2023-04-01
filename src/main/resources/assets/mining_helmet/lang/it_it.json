@@ -1,0 +1,10 @@
+{
+  "subtitles.mining_helmet.find_hidden_ore" : "Trova minerali nascosti",
+
+  "tooltip.mining_helmet.miner_charm.trinket_not_loaded" : "Senza la mod Trinkets questo oggetto è inutile.",
+
+  "item.mining_helmet.mining_helmet": "Elmetto da minatore",
+  "item.mining_helmet.miner_charm": "Anima imbottigliata",
+
+  "item.mining_helmet.grapple_pack": "GrapplePack"
+}
